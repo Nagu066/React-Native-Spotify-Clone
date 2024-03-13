@@ -4,7 +4,7 @@ import React from 'react'
 export default function App() {
   return (
     <View>
-      <Text>Audio Player</Text>
+      <Text>Audio Player!</Text>
     </View>
   )
 }

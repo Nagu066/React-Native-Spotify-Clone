@@ -9,6 +9,7 @@ const getThemeColors = () => {
 
   };
   
+  
   const lightModeColors = {
     
   };
