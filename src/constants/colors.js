@@ -1,23 +1,7 @@
-
-import { useColorScheme } from "react-native";
-
-const getThemeColors = () => {
-  const theme = useColorScheme();
-  const isDarkTheme = theme === 'dark';
-
-  const darkModeColors = {
-
-  };
-  
-  
-  const lightModeColors = {
-    
-  };
-  
-  const colors = isDarkTheme ? darkModeColors : lightModeColors;
-  
-  return Object.freeze(colors);
-  
-};
-
-export default getThemeColors;
+export const colors = {
+  bg : '#3A3A3C',
+  textWhite : '#ffffff',
+  textBlack : '#000000',
+  lightGrey: 'rgba(255,255,255,.1)',
+  darkGrey: 'rgba(0,0,0,.7)',
+}
