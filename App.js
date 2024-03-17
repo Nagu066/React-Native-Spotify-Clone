@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import Router  from './src/router/index'
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function App() {
   return (
-    <View>
-      <Text>Audio Player!</Text>
-    </View>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Router />
+    </GestureHandlerRootView>
   )
 }
-
-const styles = StyleSheet.create({})
