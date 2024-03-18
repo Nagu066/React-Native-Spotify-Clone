@@ -1,19 +1,33 @@
 import { View, Text, SafeAreaView, StyleSheet, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { colors } from '../constants/colors'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import GradientText from '../components/GradientText';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import GlobalAPIServices from '../services/GlobalAPIServices';
 
 export default function Home() {
 
   const navigation = useNavigation();
-  const [user, setUser] = React.useState('')
+  const [user, setUser] = useState('');
+  const [playLists, setPLayLists] = useState('');
 
   useEffect(()=>{
     getCurrentUser();
+    getPlaylists();
   },[])
+
+  const getPlaylists = () => {
+    GlobalAPIServices.getPLayLists().then(res => {
+      if (res.data) {
+        console.log('response:::', res);
+        setPLayLists(res.data);
+        } else {
+          console.log("Error while fetching data")
+        }
+    });
+  }
 
   const getCurrentUser = async () => {
     const currentUser = await GoogleSignin.getCurrentUser();

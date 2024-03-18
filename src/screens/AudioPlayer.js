@@ -8,7 +8,6 @@ import { colors } from '../constants/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function AudioPlayer() {
-
     const { position, duration } = useProgress();
     const playerState = usePlaybackState();
     const isPlaying = playerState.state === State.Playing;
