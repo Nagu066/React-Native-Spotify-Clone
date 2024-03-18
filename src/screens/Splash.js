@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, StatusBar, Image } from 'react-native'
 import React, { useEffect } from 'react'
 import { colors } from '../constants/colors'
 import LinearGradient from 'react-native-linear-gradient';
@@ -37,6 +37,14 @@ export default function Splash() {
           backgroundColor={colors.textBlack}
         />
         <View style={{  flex: 1, justifyContent:'center', alignItems:'center', backgroundColor:colors.textBlack}}>
+          <Image
+            source={require('../assets/images/music-player.png')}
+            style={{
+              height:100,
+              width:100,
+              resizeMode:'contain'
+            }}
+          />
           <GradientText style={styles.text}>Music Player</GradientText>
         </View>
     </SafeAreaView>
@@ -54,6 +62,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     letterSpacing: 2,
     fontSize: 30,
-    overflow:'visible'
+    overflow:'visible',
+    marginTop:10
   },
 });
