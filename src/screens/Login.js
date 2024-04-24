@@ -34,6 +34,7 @@ export default function Login() {
             setUserInfo(userInfo)
           }
         } catch (error) {
+          console.log("Google Sign In Error", error.code, error.message);
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow
           } else if (error.code === statusCodes.IN_PROGRESS) {
