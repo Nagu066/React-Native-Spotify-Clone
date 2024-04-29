@@ -33,6 +33,7 @@ export default function AudioPlayer() {
             await TrackPlayer.play();
         } catch (e) {
             console.log("Error setting up audio player", e);
+            
         }
     }
 
