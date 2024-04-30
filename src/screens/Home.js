@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, StyleSheet, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, SafeAreaView, StyleSheet, Image, Animated } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { colors } from '../constants/colors'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import GradientText from '../components/GradientText';
@@ -7,11 +7,20 @@ import { useNavigation } from '@react-navigation/native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import GlobalAPIServices from '../services/GlobalAPIServices';
 
-export default function Home() {
 
+export default function Home() {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
   const [user, setUser] = useState('');
   const [playLists, setPLayLists] = useState('');
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
 
   useEffect(() => {
     getCurrentUser();
@@ -51,7 +60,7 @@ export default function Home() {
   };
 
   return user && (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.textBlack }}>
+    <Animated.View style={{ flex: 1, backgroundColor: colors.textBlack, opacity: fadeAnim }}>
       <View style={styles.header}>
         <TouchableOpacity onLongPress={()=>{}} >
           <Image
@@ -98,7 +107,7 @@ export default function Home() {
           }
         />
       </View>
-    </SafeAreaView>
+    </Animated.View>
   );
 }
 
