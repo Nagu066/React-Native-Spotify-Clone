@@ -15,8 +15,9 @@ function App() {
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName="Splash"
-                screenOptions={{headerShown: false,
-                gestureDirection: 'horizontal-inverted',
+                screenOptions={{
+                    headerShown: false,
+                    gestureDirection: 'horizontal-inverted',
                 }}>
                     <Stack.Screen name="Splash" component={Splash}/>
                     <Stack.Screen name="Login" component={Login}/>

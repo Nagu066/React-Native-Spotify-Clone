@@ -1,18 +1,20 @@
-import { View, Text, SafeAreaView, StyleSheet, Image, Animated } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Image, Animated, LayoutAnimation } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { colors } from '../constants/colors'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import GradientText from '../components/GradientText';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import GlobalAPIServices from '../services/GlobalAPIServices';
-
+import FormInputValidation from '../components/FormInputValidation';
 
 export default function Home() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(-100)).current;
+  const slideAnim = useRef(new Animated.Value(-100)).current;
   const navigation = useNavigation();
   const [user, setUser] = useState('');
   const [playLists, setPLayLists] = useState('');
+  const [albums, setAlbums] = useState('');
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -20,7 +22,17 @@ export default function Home() {
       duration: 2000,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim]);
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 2000, // Adjust the duration as needed
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim, translateY, slideAnim]);
 
   useEffect(() => {
     getCurrentUser();
@@ -46,6 +58,18 @@ export default function Home() {
         console.log("Error while fetching data");
       }
     });
+    GlobalAPIServices.getAlbums().then(res => {
+      if (res.data) {
+        console.log('getAlbums:::', res.data);
+
+        // Filter out duplicates based on unique `id`
+        
+
+        setAlbums();
+      } else {
+        console.log("Error while fetching data");
+      }
+    });
   }
 
   const filterDuplicates = (array, key) => {
@@ -59,10 +83,14 @@ export default function Home() {
     });
   };
 
+  const openDrawer = () => {
+    navigation.navigate('Drawer');
+  };
+
   return user && (
-    <Animated.View style={{ flex: 1, backgroundColor: colors.textBlack, opacity: fadeAnim }}>
-      <View style={styles.header}>
-        <TouchableOpacity onLongPress={()=>{}} >
+    <View style={{ flex: 1, backgroundColor: colors.textBlack}}>
+      <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
+        <TouchableOpacity onPress={()=>openDrawer()} >
           <Image
             source={{ uri: user?.user?.photo }}
             resizeMode={'cover'}
@@ -72,42 +100,46 @@ export default function Home() {
           />
         </TouchableOpacity>
         <Text style={styles.name}>{user?.user?.name}</Text>
-      </View>
-      <View style={{ marginHorizontal: 15, marginVertical: 10 }}>
+      </Animated.View>
+      <Animated.View style={{ marginHorizontal: 15, marginVertical: 10,  transform: [{ translateX: slideAnim }] }} >
         <Text style={{
           fontWeight: 'bold',
           color: colors.textWhite,
           fontSize: 18,
           marginBottom:10
         }}>Artists</Text>
-        <FlatList
-          data={playLists}
-          keyExtractor={item => item.id}
-          horizontal={true}
-          renderItem={({ item }) =>
-            <TouchableOpacity
-              onPress={()=>navigation.navigate('ArtistProfile', { url: item.url })}
-              activeOpacity={0.7}
-              style={styles.artistsContainer}>
-              <Image
-                style={{
-                  borderRadius:8,
-                  opacity:0.7,
-                  height:180,
-                  width:200,
-                  backgroundColor: colors.lightGrey
-                }}
-                source={item?.image.length > 0 ? {uri:item?.image[2]?.url} : require('../assets/images/artist.png')}
-                height={180}
-                width={200}
-                resizeMode='cover'
-              />
-              <Text style={styles.artistsName}>{item.name}</Text>
-            </TouchableOpacity>
-          }
-        />
+          <FlatList
+            data={playLists}
+            // alwaysBounceHorizontal
+            keyExtractor={item => item.id}
+            horizontal={true}
+            renderItem={({ item }) =>
+              <TouchableOpacity
+                onPress={()=>navigation.navigate('ArtistProfile', { url: item.url })}
+                activeOpacity={0.7}
+                style={styles.artistsContainer}>
+                <Image
+                  style={{
+                    borderRadius:8,
+                    opacity:0.7,
+                    height:180,
+                    width:200,
+                    backgroundColor: colors.lightGrey
+                  }}
+                  source={item?.image.length > 0 ? {uri:item?.image[2]?.url} : require('../assets/images/artist.png')}
+                  height={180}
+                  width={200}
+                  resizeMode='cover'
+                />
+                <Text style={styles.artistsName}>{item.name}</Text>
+              </TouchableOpacity>
+            }
+          />        
+      </Animated.View>
+      <View>
+      <FormInputValidation isValid={true}/>
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
