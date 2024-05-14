@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, Image, Animated, LayoutAnimation } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Image, Animated, LayoutAnimation, UIManager, Platform } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { colors } from '../constants/colors'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import GlobalAPIServices from '../services/GlobalAPIServices';
 import FormInputValidation from '../components/FormInputValidation';
+
 
 export default function Home() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -83,14 +84,11 @@ export default function Home() {
     });
   };
 
-  const openDrawer = () => {
-    navigation.navigate('Drawer');
-  };
 
   return user && (
     <View style={{ flex: 1, backgroundColor: colors.textBlack}}>
       <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
-        <TouchableOpacity onPress={()=>openDrawer()} >
+        <TouchableOpacity>
           <Image
             source={{ uri: user?.user?.photo }}
             resizeMode={'cover'}
@@ -136,9 +134,6 @@ export default function Home() {
             }
           />        
       </Animated.View>
-      <View>
-      <FormInputValidation isValid={true}/>
-      </View>
     </View>
   );
 }

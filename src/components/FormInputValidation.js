@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, View, Text, LayoutAnimation } from 'react-native';
+import { TextInput, View, Text, LayoutAnimation, Platform, UIManager } from 'react-native';
+
+if (
+    Platform.OS === 'android' &&
+    UIManager.setLayoutAnimationEnabledExperimental
+  ) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 
 const FormInputValidation = ({ isValid }) => {
   const [errorMessage, setErrorMessage] = useState('');
